@@ -1,2 +1,0 @@
-## This is a code line for code base 
-# what the hell is devops and git about, do we even need this shit when I guess we will find out why the hell this exist but for now; why dont we play around with this shit.
