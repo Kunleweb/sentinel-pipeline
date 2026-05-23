@@ -1,7 +1,5 @@
-pandas
 requests
 boto3
 psycopg2-binary
 python-dotenv
-pyarrow
 s3fs
