@@ -3,3 +3,6 @@ boto3
 psycopg2-binary
 python-dotenv
 s3fs
+pyarrow
+google-api-python-client
+google-auth

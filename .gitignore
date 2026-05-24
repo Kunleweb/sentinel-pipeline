@@ -1,1 +1,2 @@
 supabase_to_s3/config.py
+extractors/shared/config.py

@@ -20,7 +20,6 @@ def get_connection(credentials: dict):
 
 
 def extract_table(conn, table_name: str) -> tuple[list, list]:
-    """Return (columns, rows) for the given table."""
     cursor = conn.cursor()
     cursor.execute(f'SELECT * FROM "{table_name}"')
     columns = [desc[0] for desc in cursor.description]
