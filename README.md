@@ -1,23 +1,23 @@
 # Sentinel
 
-Multipled data sources into a single Snowflake warehouse.
+Multiple data sources into a single Snowflake warehouse.
 
 ## Source systems
 
-- **Policy admin** — customers, agents, policies, coverages from Supabase PostgreSQL
-- **Claims** — nested JSON files dropped daily to Google Drive
-- **Billing** — CSV exports from Google Drive
-- **Weather** — local CSV file
+- **Policy admin**  customers, agents, policies, coverages from Supabase PostgreSQL
+- **Claims**  nested JSON files dropped daily to Google Drive
+- **Billing** CSV exports from Google Drive
+- **Weather** local CSV file
 
 ## Architecture
 
 ```
-Sources → S3 landing/ → S3 processed/ → Snowflake
+Sources : S3 landing/  S3 processed/ : Snowflake
 ```
 
-**Landing** — raw data as-is, partitioned by `source=` and `day=`.  
-**Processed** — flattened, typed, deduplicated Parquet.  
-**Snowflake** — staging tables fed by S3, merged into warehouse tables.
+**Landing** : raw data as-is, partitioned by `source=` and `day=`.  
+**Processed** : flattened, typed, deduplicated Parquet.  
+**Snowflake** : staging tables fed by S3, merged into warehouse tables.
 
 All three layers are idempotent. Re-running skips anything already written.
 
