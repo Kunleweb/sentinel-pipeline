@@ -6,6 +6,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from supabase_to_s3 import pipeline as supabase_pipeline
 from gdrive_to_s3 import pipeline as gdrive_pipeline
+from gdrive_csv_to_s3 import pipeline as billing_pipeline
+from local_to_s3 import pipeline as local_pipeline
 
 if __name__ == "__main__":
     print("=" * 54)
@@ -18,3 +20,15 @@ if __name__ == "__main__":
     print("  PIPELINE 2: Google Drive → S3 (json)")
     print("=" * 54)
     gdrive_pipeline.run()
+
+    print()
+    print("=" * 54)
+    print("  PIPELINE 3: Google Drive CSV → S3 (parquet)")
+    print("=" * 54)
+    billing_pipeline.run()
+
+    print()
+    print("=" * 54)
+    print("  PIPELINE 4: Local CSV → S3 (parquet)")
+    print("=" * 54)
+    local_pipeline.run()

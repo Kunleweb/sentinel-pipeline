@@ -19,7 +19,7 @@ def _s3_key(source: str, table_name: str, extension: str, day: str = None) -> st
     )
 
 
-def keykey_exists(s3_client, key: str) -> bool:
+def key_exists(s3_client, key: str) -> bool:
     try:
         s3_client.head_object(Bucket=S3_BUCKET, Key=key)
         return True
@@ -27,6 +27,10 @@ def keykey_exists(s3_client, key: str) -> bool:
         if e.response["Error"]["Code"] == "404":
             return False
         raise
+
+
+def s3_key_for(source: str, table_name: str, extension: str, day: str = None) -> str:
+    return _s3_key(source, table_name, extension, day)
 
 
 def upload_table(s3_client, source: str, table_name: str, columns: list, rows: list) -> tuple[str, bool]:
