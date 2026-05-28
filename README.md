@@ -1,6 +1,6 @@
 # Sentinel
 
-An insurance data platform that consolidates three operational systems into a single Snowflake warehouse.
+Multipled data sources into a single Snowflake warehouse.
 
 ## Source systems
 
