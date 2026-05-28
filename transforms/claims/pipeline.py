@@ -26,17 +26,15 @@ def _processed_key(folder: str, day: str) -> str:
 def run():
     s3 = get_s3_client()
 
-    print("  Listing claim files in landing...")
     all_keys = list_files(s3, f"{S3_PREFIX}source={CLAIMS_SOURCE}/", suffix=".json")
-    print(f"  Found {len(all_keys)} claim file(s)\n")
+    print(f"  {len(all_keys)} claim file(s) found\n")
 
-    # group by landing day
     by_day: dict[str, list[str]] = defaultdict(list)
     for key in all_keys:
         by_day[_day_from_key(key)].append(key)
 
     uploaded, skipped = [], []
-    all_claim_rows, all_payment_rows = [], []   # for global sanity check
+    all_claim_rows, all_payment_rows = [], []
 
     for day in sorted(by_day):
         print(f"  [day={day}] {len(by_day[day])} file(s)")
@@ -62,7 +60,6 @@ def run():
         all_claim_rows.extend(day_claim_rows)
         all_payment_rows.extend(day_payment_rows)
 
-        # one merged parquet per day per table
         write_parquet(s3, rows_to_table(day_claim_rows, CLAIMS_SCHEMA), cf_key)
         write_parquet(s3, rows_to_table(day_payment_rows, PAYMENTS_SCHEMA), pay_key)
 

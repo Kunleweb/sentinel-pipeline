@@ -1,7 +1,3 @@
-"""
-Adds transforms/ and extractors/ to sys.path.
-Must be the first import in every transforms module.
-"""
 import sys
 import os
 

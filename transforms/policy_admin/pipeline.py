@@ -54,9 +54,8 @@ def run():
         table = clean(table, cfg)
         print(f"    {len(table):,} rows after cleaning")
 
-        print(f"    writing  s3://{S3_BUCKET}/{out_key}")
         write_parquet(s3, table, out_key)
         uploaded.append(f"s3://{S3_BUCKET}/{out_key}")
-        print(f"    done")
+        print(f"    written → s3://{S3_BUCKET}/{out_key}")
 
     return {"uploaded": uploaded, "skipped": skipped, "errors": errors}

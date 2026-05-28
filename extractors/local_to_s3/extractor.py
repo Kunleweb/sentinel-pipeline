@@ -3,7 +3,6 @@ from local_to_s3.config import DATA_DIR, FILES
 
 
 def get_local_files() -> list[dict]:
-    """Return list of {path, source, file_name} for each configured file."""
     result = []
     for filename, (source, s3_name) in FILES.items():
         path = os.path.normpath(os.path.join(DATA_DIR, filename))

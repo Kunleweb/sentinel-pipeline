@@ -6,3 +6,4 @@ s3fs
 pyarrow
 google-api-python-client
 google-auth
+snowflake-connector-python

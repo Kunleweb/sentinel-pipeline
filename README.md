@@ -1,24 +1,50 @@
-three data systems: 
- - policy administration
- - claims management
- - billing 
+# Sentinel
 
-Customers, policies, agents
-- PostgreSQL-backed policy admin platform
+An insurance data platform that consolidates three operational systems into a single Snowflake warehouse.
 
-Claims
-- vendor-managed claims management system that exports nested JSON files daily.
+## Source systems
 
-Billing Transactions live in a third system that produces flat-file CSV exports each night
-- live in a third system that produces flat-file CSV exports
+- **Policy admin** — customers, agents, policies, coverages from Supabase PostgreSQL
+- **Claims** — nested JSON files dropped daily to Google Drive
+- **Billing** — CSV exports from Google Drive
+- **Weather** — local CSV file
 
-Goal: is to to create a unified view by moving all the data to one place. 
+## Architecture
 
+```
+Sources → S3 landing/ → S3 processed/ → Snowflake
+```
 
-Stage 1:
+**Landing** — raw data as-is, partitioned by `source=` and `day=`.  
+**Processed** — flattened, typed, deduplicated Parquet.  
+**Snowflake** — staging tables fed by S3, merged into warehouse tables.
 
-- Build a multi-source extraction layer that reliably pulls from PostgreSQL (policy admin), JSON file drops (claims management), CSV exports (billing), and an external REST API (weather) on a daily schedule.
+All three layers are idempotent. Re-running skips anything already written.
 
-- Implement a multi-zone data lake architecture on Amazon S3 - landing and processed zones - to enforce clear data lifecycle boundaries and enable controlled promotion of validated data.
+## Running
 
-- Develop standardised, deduplicated datasets through batch transformation jobs that flatten nested JSON, enforce types, validate referential integrity, and produce Parquet outputs.
+```bash
+python main.py
+```
+
+Or run individual layers:
+
+```bash
+python extractors/main.py
+python transforms/main.py
+python loaders/load_warehouse.py
+```
+
+## Setup
+
+All secrets are in AWS Secrets Manager (region `eu-west-2`): `kunleweb_secret` for Supabase, `kunleweb_gdrive_secret` for Google Drive, and `snowflake_secret` for Snowflake. AWS credentials go in `extractors/shared/config.py` (gitignored).
+
+Run `sql/snowflake_ddl.sql` once in Snowflake to create the database, schemas, tables, and S3 stage. After running it you'll need to grab the IAM user ARN and external ID from `DESC INTEGRATION S3_SENTINEL_INTEGRATION` and update the IAM role trust policy in AWS before the stage will work.
+
+```bash
+pip install -r requirements.txt
+```
+
+## Warehouse tables
+
+`SENTINEL.WAREHOUSE` contains seven tables: `claims_fact`, `payments`, `dim_customer`, `dim_agent`, `dim_policy`, `dim_coverage`, `weather_daily`.

@@ -1,7 +1,6 @@
 import sys
 import os
 
-# Make extractors/ the root so shared, supabase_to_s3, gdrive_to_s3 are importable
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from supabase_to_s3 import pipeline as supabase_pipeline
@@ -10,25 +9,14 @@ from gdrive_csv_to_s3 import pipeline as billing_pipeline
 from local_to_s3 import pipeline as local_pipeline
 
 if __name__ == "__main__":
-    print("=" * 54)
-    print("  PIPELINE 1: Supabase → S3 (parquet)")
-    print("=" * 54)
+    print("supabase → s3")
     supabase_pipeline.run()
 
-    print()
-    print("=" * 54)
-    print("  PIPELINE 2: Google Drive → S3 (json)")
-    print("=" * 54)
+    print("\ngdrive → s3")
     gdrive_pipeline.run()
 
-    print()
-    print("=" * 54)
-    print("  PIPELINE 3: Google Drive CSV → S3 (parquet)")
-    print("=" * 54)
+    print("\ngdrive csv → s3")
     billing_pipeline.run()
 
-    print()
-    print("=" * 54)
-    print("  PIPELINE 4: Local CSV → S3 (parquet)")
-    print("=" * 54)
+    print("\nlocal → s3")
     local_pipeline.run()

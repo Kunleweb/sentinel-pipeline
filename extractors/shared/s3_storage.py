@@ -34,7 +34,6 @@ def s3_key_for(source: str, table_name: str, extension: str, day: str = None) ->
 
 
 def upload_table(s3_client, source: str, table_name: str, columns: list, rows: list) -> tuple[str, bool]:
-    """Supabase tables → parquet. Returns (uri, skipped)."""
     s3_key = _s3_key(source, table_name, "parquet")
 
     if key_exists(s3_client, s3_key):
@@ -56,7 +55,6 @@ def upload_table(s3_client, source: str, table_name: str, columns: list, rows: l
 
 
 def upload_json_file(s3_client, source: str, table_name: str, content: bytes, day: str = None) -> tuple[str, bool]:
-    """Google Drive JSON files → S3 as-is. Returns (uri, skipped)."""
     s3_key = _s3_key(source, table_name, "json", day=day)
 
     if key_exists(s3_client, s3_key):

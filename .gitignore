@@ -1,3 +1,7 @@
-supabase_to_s3/config.py
 extractors/shared/config.py
 data/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env

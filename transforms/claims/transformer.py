@@ -58,5 +58,5 @@ def sanity_check(claim_rows: list[dict], payment_rows: list[dict]) -> bool:
     print(f"\n  Sanity check:")
     print(f"    total approved_amount : {total_approved:,.2f}")
     print(f"    total payment_amount  : {total_payments:,.2f}")
-    print(f"    payments <= approved  : {'PASS' if passed else 'FAIL ⚠'}")
+    print(f"    payments <= approved  : {'PASS' if passed else 'FAIL'}")
     return passed

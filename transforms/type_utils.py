@@ -1,4 +1,3 @@
-"""Pure-Python type conversion helpers. No pyarrow dependency."""
 from datetime import date, datetime, timezone
 from decimal import Decimal, ROUND_HALF_UP
 
