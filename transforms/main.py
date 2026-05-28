@@ -1,25 +1,28 @@
-import sys
-import os
+import _bootstrap  # noqa: F401
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from policy_admin.pipeline import run as run_policy_admin
+from claims.pipeline import run as run_claims
 
-from runner import run_all
 
-if __name__ == "__main__":
-    print("=" * 54)
-    print("  TRANSFORMS: Landing → Processed")
-    print("=" * 54)
-
-    results = run_all()
-
-    print("\nSummary")
+def _print_results(results: dict) -> None:
     for uri in results["uploaded"]:
         print(f"  uploaded  {uri}")
     for uri in results["skipped"]:
         print(f"  skipped   {uri}")
     for name in results["errors"]:
         print(f"  ERROR     {name} — no landing data found")
-    print(f"\n  {len(results['uploaded'])} uploaded, "
-          f"{len(results['skipped'])} skipped, "
-          f"{len(results['errors'])} errors.")
-    print(".")
+    u, s, e = len(results["uploaded"]), len(results["skipped"]), len(results["errors"])
+    print(f"\n  {u} uploaded, {s} skipped, {e} errors.")
+
+
+if __name__ == "__main__":
+    print("=" * 54)
+    print("  TRANSFORM 1: Policy Admin → Processed")
+    print("=" * 54)
+    _print_results(run_policy_admin())
+
+    print()
+    print("=" * 54)
+    print("  TRANSFORM 2: Claims → Processed")
+    print("=" * 54)
+    _print_results(run_claims())

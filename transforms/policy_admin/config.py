@@ -1,13 +1,8 @@
-import sys
-import os
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "extractors"))
-
-from shared.config import AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET, S3_PREFIX
+import _bootstrap  # noqa: F401
+from shared.config import S3_BUCKET, S3_PREFIX
 
 PROCESSED_PREFIX = "processed/"
 
-# Each entry defines how a landed table should be cleaned.
 TABLE_TRANSFORMS = {
     "agents": {
         "landing_source": "policy_admin",
@@ -58,7 +53,7 @@ TABLE_TRANSFORMS = {
         "landing_name":   "meteo-weather",
         "output_name":    "weather_daily",
         "pk":             ["weather_date", "zip_code"],
-        "date_fields":    [],           # already date32 in source
+        "date_fields":    [],
         "money_fields":   [],
         "upper_fields":   ["state"],
         "title_fields":   ["city", "severity"],
